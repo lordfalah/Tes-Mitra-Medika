@@ -26,9 +26,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { isObjectLike } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { TGetBooksWithFilters, updateBookAction } from "@/action/action-book";
+import { TGetBooksWithFilters } from "@/action/action-book";
 import { bookSchema, TBookSchema } from "@/validation/book.validation";
 import { AutosizeTextarea } from "@/components/ui/autosize-textarea";
+import { fetchUpdateBook } from "@/lib/data/book";
+import { useRouter } from "next/navigation";
 
 interface UpdateBookSheetProps
   extends React.ComponentPropsWithRef<typeof Sheet> {
@@ -39,6 +41,7 @@ const UpdateBookSheet: React.FC<UpdateBookSheetProps> = ({
   book,
   ...props
 }) => {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<TBookSchema>({
     resolver: zodResolver(bookSchema),
@@ -68,7 +71,7 @@ const UpdateBookSheet: React.FC<UpdateBookSheetProps> = ({
           setIsSubmitting(true);
           try {
             if (!book?.id) throw new Error("book is required");
-            const res = await updateBookAction(book.id, values);
+            const res = await fetchUpdateBook(book.id, values);
 
             if (!res.status && res.errors && typeof isObjectLike(res.errors)) {
               Object.keys(res.errors).forEach((key) => {
@@ -80,7 +83,9 @@ const UpdateBookSheet: React.FC<UpdateBookSheetProps> = ({
 
               throw new Error(res.message || "Failed to create book");
             }
+
             props.onOpenChange?.(false);
+            router.refresh();
           } catch (error) {
             console.error({ error });
             throw error;
@@ -89,14 +94,14 @@ const UpdateBookSheet: React.FC<UpdateBookSheetProps> = ({
           }
         })(),
         {
-          loading: "Saving produk...",
-          success: "Produk berhasil diupdate!",
+          loading: "Saving Book...",
+          success: "Book berhasil diupdate!",
           error: (err) => getErrorMessage(err),
           position: "top-center",
         },
       );
     },
-    [form, book?.id, props],
+    [book?.id, props, router, form],
   );
 
   return (

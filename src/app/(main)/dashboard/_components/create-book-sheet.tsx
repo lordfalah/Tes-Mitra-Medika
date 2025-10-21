@@ -29,9 +29,11 @@ import { AutosizeTextarea } from "@/components/ui/autosize-textarea";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { bookSchema, TBookSchema } from "@/validation/book.validation";
-import { createBookAction } from "@/action/action-book";
+import { fetchCreateBook } from "@/lib/data/book";
+import { useRouter } from "next/navigation";
 
 const CreateBookSheet: React.FC = () => {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<TBookSchema>({
     resolver: zodResolver(bookSchema),
@@ -49,7 +51,7 @@ const CreateBookSheet: React.FC = () => {
         (async () => {
           setIsSubmitting(true);
           try {
-            const res = await createBookAction(data);
+            const res = await fetchCreateBook(data);
 
             if (!res.status && res.errors && typeof isObjectLike(res.errors)) {
               Object.keys(res.errors).forEach((key) => {
@@ -64,6 +66,7 @@ const CreateBookSheet: React.FC = () => {
 
             // sukses → reset form
             form.reset();
+            router.refresh();
           } catch (error) {
             console.error({ error });
             throw error;
@@ -79,7 +82,7 @@ const CreateBookSheet: React.FC = () => {
         },
       );
     },
-    [form],
+    [form, router],
   );
 
   return (

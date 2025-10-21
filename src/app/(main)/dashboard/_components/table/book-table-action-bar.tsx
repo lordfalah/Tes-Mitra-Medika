@@ -3,7 +3,6 @@
 import type { Table } from "@tanstack/react-table";
 import { Download, Trash2 } from "lucide-react";
 import * as React from "react";
-
 import {
   DataTableActionBar,
   DataTableActionBarAction,
@@ -11,8 +10,10 @@ import {
 } from "@/components/data-table/data-table-action-bar";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { deleteBooks, TGetBooksWithFilters } from "@/action/action-book";
+import { TGetBooksWithFilters } from "@/action/action-book";
 import { exportTableToCSV } from "@/lib/export";
+import { fetchDeleteBooks } from "@/lib/data/book";
+import { useRouter } from "next/navigation";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const actions = ["export", "delete"] as const;
@@ -27,6 +28,7 @@ export function BookTableActionBar({ table }: BookTableActionBarProps) {
   const rows = table.getFilteredSelectedRowModel().rows;
   const [isPending, startTransition] = React.useTransition();
   const [currentAction, setCurrentAction] = React.useState<Action | null>(null);
+  const router = useRouter();
 
   const getIsActionPending = React.useCallback(
     (action: Action) => isPending && currentAction === action,
@@ -46,17 +48,20 @@ export function BookTableActionBar({ table }: BookTableActionBarProps) {
   const onTaskDelete = React.useCallback(() => {
     setCurrentAction("delete");
     startTransition(async () => {
-      const { error } = await deleteBooks({
+      const { data, message } = await fetchDeleteBooks({
         ids: rows.map((row) => row.original.id),
       });
 
-      if (error) {
-        toast.error(error);
+      if (!data || data === 0) {
+        toast.error(message);
         return;
       }
+      toast.success(`Books deleted total ${data}`, { position: "top-center" });
       table.toggleAllRowsSelected(false);
     });
-  }, [rows, table]);
+
+    router.refresh();
+  }, [router, rows, table]);
 
   return (
     <DataTableActionBar table={table} visible={rows.length > 0}>

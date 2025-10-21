@@ -60,6 +60,8 @@ class ActionErrorHandler {
       {} as Record<string, string>,
     );
 
+    // console.log(error);
+
     return {
       status: false as const,
       message: "Validation error",

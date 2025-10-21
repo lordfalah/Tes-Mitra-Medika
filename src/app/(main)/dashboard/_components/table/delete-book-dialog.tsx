@@ -27,8 +27,10 @@ import {
 } from "@/components/ui/drawer";
 
 import { getErrorMessage } from "@/lib/handle-error";
-import { deleteBooks, TGetBooksWithFilters } from "@/action/action-book";
+import { TGetBooksWithFilters } from "@/action/action-book";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { fetchDeleteBooks } from "@/lib/data/book";
+import { useRouter } from "next/navigation";
 
 interface DeleteBooksDialogProps
   extends React.ComponentPropsWithoutRef<typeof Dialog> {
@@ -45,21 +47,23 @@ export function DeleteBooksDialog({
 }: DeleteBooksDialogProps) {
   const [isDeletePending, startDeleteTransition] = React.useTransition();
   const isDesktop = useMediaQuery("(min-width: 640px)");
+  const router = useRouter();
 
   function onDelete() {
     startDeleteTransition(async () => {
-      const { error } = await deleteBooks({
+      const { data, message } = await fetchDeleteBooks({
         ids: books.map((task) => task.id),
       });
 
-      if (error) {
-        getErrorMessage(error);
+      if (!data || data === 0) {
+        getErrorMessage(message);
         return;
       }
 
       props.onOpenChange?.(false);
-      toast.success("books deleted", { position: "top-center" });
+      toast.success(message ?? "books deleted", { position: "top-center" });
       onSuccess?.();
+      router.refresh();
     });
   }
 
@@ -80,7 +84,7 @@ export function DeleteBooksDialog({
             <DialogDescription>
               This action cannot be undone. This will permanently delete your{" "}
               <span className="font-medium">{books.length}</span>
-              {books.length === 1 ? " product" : " books"} from our servers.
+              {books.length === 1 ? " book" : " books"} from our servers.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:space-x-0">
@@ -123,7 +127,7 @@ export function DeleteBooksDialog({
           <DrawerDescription>
             This action cannot be undone. This will permanently delete your{" "}
             <span className="font-medium">{books.length}</span>
-            {books.length === 1 ? " product" : " books"} from our servers.
+            {books.length === 1 ? " book" : " books"} from our servers.
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter className="gap-2 sm:space-x-0">

@@ -11,6 +11,7 @@ import { getBooksWithFilters } from "@/action/action-book";
 import { searchParamsCacheBook } from "@/lib/search-params/search-book";
 import DataTableBook from "./_components/table/data-table-book";
 import CreateBookSheet from "./_components/create-book-sheet";
+import { fetchBooks } from "@/lib/data/book";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -24,7 +25,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const search = searchParamsCacheBook.parse(await searchParams);
   const [session, { data }] = await Promise.all([
     getServerSession(),
-    getBooksWithFilters(search),
+    await fetchBooks(search),
   ]);
   const user = session?.user;
   if (!user) unauthorized();
