@@ -118,6 +118,8 @@ export async function createBookAction(
       },
     });
 
+    revalidatePath("/dashboard");
+
     return {
       status: true,
       message: "Book berhasil dibuat",
