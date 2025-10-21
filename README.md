@@ -60,3 +60,11 @@ npm run dev
 - POST /api/auth/sign-out
 - POST /api/auth/callback/google
 - GET /dashboard
+
+## 6. DEMO
+<img width="1849" height="966" alt="Screenshot from 2025-10-21 13-13-30" src="https://github.com/user-attachments/assets/f5fbda7f-eed1-4dfe-82ec-7edd6a528996" />
+<img width="1844" height="965" alt="image" src="https://github.com/user-attachments/assets/20798efe-445e-427b-97ac-a03f8111ef5b" />
+<img width="1850" height="1145" alt="screencapture-tes-mitra-medika-vercel-app-dashboard-2025-10-21-13_38_15" src="https://github.com/user-attachments/assets/c92f6fd8-00b0-4002-ac79-208463851f4d" />
+
+
+
