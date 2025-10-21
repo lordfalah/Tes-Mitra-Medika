@@ -53,3 +53,10 @@ npm run dev
 ## 4. Demo Project
 
 - https://tes-mitra-medika.vercel.app/
+
+## 5. API 
+
+- POST /api/auth/sign-up/email
+- POST /api/auth/sign-out
+- POST /api/auth/callback/google
+- GET /dashboard
