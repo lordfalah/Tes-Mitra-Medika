@@ -6,12 +6,16 @@ import { loadSearchParamsBook } from "@/lib/search-params/search-book";
 import { bookSchema } from "@/validation/book.validation";
 import { Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unauthorized } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   const session = await getServerSession();
-  if (!session) unauthorized();
+  if (!session) {
+    return NextResponse.json(
+      { status: false, message: "Unauthorized access", data: [] },
+      { status: 401 },
+    );
+  }
 
   try {
     const { createdAt, page, perPage, title, sort } = loadSearchParamsBook(req);
@@ -76,7 +80,16 @@ export const GET = async (req: NextRequest) => {
 
 export const POST = async (req: NextRequest) => {
   const session = await getServerSession();
-  if (!session) unauthorized();
+  if (!session) {
+    NextResponse.json(
+      {
+        status: false,
+        errors: null,
+        message: "Unauthorized access",
+      },
+      { status: 401 },
+    );
+  }
 
   try {
     const body = await req.json();
@@ -116,7 +129,16 @@ export const POST = async (req: NextRequest) => {
 
 export const DELETE = async (req: NextRequest) => {
   const session = await getServerSession();
-  if (!session) unauthorized();
+  if (!session) {
+    NextResponse.json(
+      {
+        status: false,
+        data: 0,
+        message: "Unauthorized access",
+      },
+      { status: 401 },
+    );
+  }
 
   try {
     const body = await req.json();

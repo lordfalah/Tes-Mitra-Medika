@@ -27,6 +27,7 @@ export const fetchBooks = async (
         cache: "no-store",
       },
     );
+
     const res = await req.json();
     return res;
   } catch (error) {
