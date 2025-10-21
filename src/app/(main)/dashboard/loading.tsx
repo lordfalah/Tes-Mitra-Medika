@@ -1,8 +1,9 @@
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardLoading() {
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-12">
+    <main className="mx-auto w-full max-w-6xl space-y-4 px-4 py-12">
       <div className="space-y-8">
         <div className="space-y-2">
           <Skeleton className="h-7 w-40" />
@@ -45,6 +46,8 @@ export default function DashboardLoading() {
           </div>
         </div>
       </div>
+
+      <DataTableSkeleton columnCount={6} about="Books" filterCount={2} />
     </main>
   );
 }
