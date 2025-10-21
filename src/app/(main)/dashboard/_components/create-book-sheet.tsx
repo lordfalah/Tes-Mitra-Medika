@@ -59,7 +59,7 @@ const CreateBookSheet: React.FC = () => {
                 });
               });
 
-              throw new Error(res.message || "Failed to create product");
+              throw new Error(res.message || "Failed to create Book");
             }
 
             // sukses → reset form
@@ -72,8 +72,8 @@ const CreateBookSheet: React.FC = () => {
           }
         })(),
         {
-          loading: "Saving produk...",
-          success: "Produk berhasil disimpan!",
+          loading: "Saving Book...",
+          success: "Book berhasil disimpan!",
           error: (err) => getErrorMessage(err),
           position: "top-center",
         },
@@ -86,15 +86,15 @@ const CreateBookSheet: React.FC = () => {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" size={"sm"}>
-          Create Product
+          Create Book
         </Button>
       </SheetTrigger>
 
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Create Product</SheetTitle>
+          <SheetTitle>Create Book</SheetTitle>
           <SheetDescription>
-            Create the product details and save the changes
+            Create the Book details and save the changes
           </SheetDescription>
         </SheetHeader>
 

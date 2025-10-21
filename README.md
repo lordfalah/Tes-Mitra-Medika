@@ -33,7 +33,7 @@ DATABASE_URL="postgresql://postgres.tjblfdegrkidzdhlcwoy:L1pql7UoNXAKG5x4@aws-1-
 DIRECT_URL="postgresql://postgres.tjblfdegrkidzdhlcwoy:L1pql7UoNXAKG5x4@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres"
 
 BETTER_AUTH_SECRET=dpzGqZeJM3n4Lp8SZNyuQSUniRKjbGVx
-BETTER_AUTH_URL=http://localhost:3000 
+BETTER_AUTH_URL=http://localhost:3000
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 GOOGLE_CLIENT_ID=342757183875-5i5nktnhl0oachie05jku61kpegg9509.apps.googleusercontent.com
@@ -42,13 +42,14 @@ GOOGLE_CLIENT_SECRET=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
 RESEND_API_KEY=re_Ag1uGKqv_Q7ZXrgP988EywU8qgyUp469L
 ```
 
-## 3. Jalankan 
+## 3. Jalankan
 
 ```bash
 npx prisma migrate dev
-npx prisma db seed 
+npx prisma db seed
 npm run dev
 ```
 
+## 4. Demo Project
 
-
+- https://tes-mitra-medika.vercel.app/

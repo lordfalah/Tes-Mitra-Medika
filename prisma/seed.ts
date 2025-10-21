@@ -8,6 +8,8 @@ const prisma = globalForPrisma.prisma || new PrismaClient();
 
 async function main() {
   console.log("🌱 Start seeding...");
+  // Hapus data lama
+  await prisma.book.deleteMany();
 
   const booksData = [
     {
