@@ -7,7 +7,6 @@ import {
   ProfileInformation,
 } from "./_components/profile-information";
 import { SearchParams } from "nuqs";
-import { getBooksWithFilters } from "@/action/action-book";
 import { searchParamsCacheBook } from "@/lib/search-params/search-book";
 import DataTableBook from "./_components/table/data-table-book";
 import CreateBookSheet from "./_components/create-book-sheet";
@@ -44,7 +43,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
         <div className="space-y-2.5">
           <CreateBookSheet />
-          <DataTableBook data={data.data} total={data.total} />
+          {data.data && <DataTableBook data={data.data} total={data.total} />}
         </div>
       </div>
     </main>

@@ -72,6 +72,73 @@ async function main() {
       publicationYear: 2015,
       description: "Guide to prepare for coding interviews.",
     },
+    // tambahan 10 lagi
+    {
+      title: "Code Complete",
+      author: "Steve McConnell",
+      publicationYear: 2004,
+      description:
+        "Comprehensive guide to software construction and craftsmanship.",
+    },
+    {
+      title: "The Mythical Man-Month",
+      author: "Frederick P. Brooks Jr.",
+      publicationYear: 1975,
+      description: "Essays on software engineering and project management.",
+    },
+    {
+      title: "Continuous Delivery",
+      author: "Jez Humble",
+      publicationYear: 2010,
+      description: "Principles and practices for building deployable software.",
+    },
+    {
+      title: "Domain-Driven Design",
+      author: "Eric Evans",
+      publicationYear: 2003,
+      description: "Tackling complex software design using domain modeling.",
+    },
+    {
+      title: "The Art of Computer Programming",
+      author: "Donald E. Knuth",
+      publicationYear: 2011,
+      description:
+        "Comprehensive volumes covering algorithms and programming theory.",
+    },
+    {
+      title: "The Phoenix Project",
+      author: "Gene Kim",
+      publicationYear: 2013,
+      description: "A novel about IT, DevOps, and helping your business win.",
+    },
+    {
+      title: "Accelerate",
+      author: "Nicole Forsgren",
+      publicationYear: 2018,
+      description:
+        "Building and scaling high-performing technology organizations.",
+    },
+    {
+      title: "Soft Skills: The software developer's life manual",
+      author: "John Sonmez",
+      publicationYear: 2014,
+      description:
+        "Guidance on career, productivity, and personal development for developers.",
+    },
+    {
+      title: "Algorithms to Live By",
+      author: "Brian Christian",
+      publicationYear: 2016,
+      description:
+        "Applying computer science algorithms to everyday human decisions.",
+    },
+    {
+      title: "Clean Architecture",
+      author: "Robert C. Martin",
+      publicationYear: 2017,
+      description:
+        "A guide to creating robust and maintainable software architectures.",
+    },
   ];
 
   for (const book of booksData) {
