@@ -1,22 +1,14 @@
 import ActionErrorHandler from "@/lib/action-error-handler";
-import { getServerSession } from "@/lib/get-session";
 import { getErrorMessage } from "@/lib/handle-error";
 import prisma from "@/lib/prisma";
 import { loadSearchParamsBook } from "@/lib/search-params/search-book";
+import { withAuth } from "@/lib/with-auth";
 import { bookSchema } from "@/validation/book.validation";
 import { Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
-  const session = await getServerSession();
-  if (!session) {
-    return NextResponse.json(
-      { status: false, message: "Unauthorized access", data: [] },
-      { status: 401 },
-    );
-  }
-
+export const GET = withAuth(async (req) => {
   try {
     const { createdAt, page, perPage, title, sort } = loadSearchParamsBook(req);
 
@@ -70,27 +62,21 @@ export const GET = async (req: NextRequest) => {
       { status: 200 },
     );
   } catch (error) {
+    // Log error sesuai jenisnya
+    if (error instanceof PrismaClientKnownRequestError) {
+      console.error(ActionErrorHandler.handlePrisma(error));
+    } else {
+      console.error(ActionErrorHandler.handleDefault(error));
+    }
     return NextResponse.json({
       status: false,
       errors: null,
       message: getErrorMessage(error),
     });
   }
-};
+}) as never;
 
-export const POST = async (req: NextRequest) => {
-  const session = await getServerSession();
-  if (!session) {
-    NextResponse.json(
-      {
-        status: false,
-        errors: null,
-        message: "Unauthorized access",
-      },
-      { status: 401 },
-    );
-  }
-
+export const POST = withAuth(async (req) => {
   try {
     const body = await req.json();
     const parsed = bookSchema.safeParse(body);
@@ -125,21 +111,9 @@ export const POST = async (req: NextRequest) => {
       message: getErrorMessage(error),
     });
   }
-};
+}) as never;
 
-export const DELETE = async (req: NextRequest) => {
-  const session = await getServerSession();
-  if (!session) {
-    NextResponse.json(
-      {
-        status: false,
-        data: 0,
-        message: "Unauthorized access",
-      },
-      { status: 401 },
-    );
-  }
-
+export const DELETE = withAuth(async (req) => {
   try {
     const body = await req.json();
     const { ids } = body as { ids: string[] };
@@ -166,11 +140,16 @@ export const DELETE = async (req: NextRequest) => {
       { status: 200 },
     );
   } catch (error) {
-    console.error(error);
+    // Log error sesuai jenisnya
+    if (error instanceof PrismaClientKnownRequestError) {
+      console.error(ActionErrorHandler.handlePrisma(error));
+    } else {
+      console.error(ActionErrorHandler.handleDefault(error));
+    }
     return NextResponse.json({
       status: false,
       data: 0,
       message: getErrorMessage(error),
     });
   }
-};
+}) as never;
