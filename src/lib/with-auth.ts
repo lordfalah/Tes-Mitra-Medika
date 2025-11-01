@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "./get-session";
-import { Session, User } from "better-auth";
+import type { Session } from "@/lib/auth";
 
 type Handler = (
-  req: NextRequest & { auth: { session: Session; user: User } },
+  req: NextRequest & { auth: Session },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context?: any,
 ) => Promise<Response>;
@@ -23,7 +23,7 @@ export function withAuth(handler: Handler): Handler {
     }
 
     // If authenticated, call the original handler
-    req.auth = { session: session.session, user: session.user };
+    req.auth = { ...session };
     return handler(req, context);
   };
 }

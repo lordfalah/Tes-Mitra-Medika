@@ -2,14 +2,14 @@ import mitramedikalogo from "@/assets/mitra_medika.jpg";
 import { ModeToggle } from "@/components/mode-toggle";
 import { UserDropdown } from "@/components/user-dropdown";
 import { getServerSession } from "@/lib/get-session";
+import type { Session } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 export async function Navbar() {
-  const session = await getServerSession();
-  const user = session?.user;
-
-  if (!user) return null;
+  const session = getServerSession();
 
   return (
     <header className="bg-background border-b">
@@ -29,9 +29,22 @@ export async function Navbar() {
         </Link>
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <UserDropdown user={user} />
+
+          <Suspense fallback={<Skeleton className="h-9 w-28" />}>
+            <AvatarUser auth={session} />
+          </Suspense>
         </div>
       </div>
     </header>
+  );
+}
+
+export async function AvatarUser({ auth }: { auth: Promise<Session | null> }) {
+  const session = await auth;
+
+  return session ? (
+    <UserDropdown user={session.user} />
+  ) : (
+    <Skeleton className="h-9 w-28" />
   );
 }
